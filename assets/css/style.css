@@ -1,0 +1,56 @@
+.container {
+
+}
+
+#headerRow {
+
+}
+
+#gameName {
+
+}
+
+.header {
+	margin-top: 40px;
+}
+
+#timerResultsRow {
+	min-height: 60px;
+}
+
+#questionTimer {
+
+}
+
+#questionRow {
+
+}
+
+
+#question {
+	min-height: 60px;
+	text-align: center;
+	font-size: 26px;
+	color: white;
+}
+
+#playContentRow {
+
+}
+
+#potentialAnswers {
+
+}
+
+.answerRow {
+
+}
+
+.answerCol {
+
+}
+
+.btn-lg {
+	width: 100%;
+	margin-top: 20px;
+}

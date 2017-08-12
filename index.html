@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Trivia Game</title>
+	
+	<!-- Bootstrap 3.3.6 -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <!--Bootswatch Cyborg-->
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/cyborg/bootstrap.min.css">
+    
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+    
+    <!--Javascript-->
+    <script  src="assets/javascript/app.js"></script>
+	
+	<!--My CSS Override of Bootstrap and Bootswatch-->
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+	<div id="headerRow" class="row">
+		<div id="gameName" class="col-md-12 bs-component">
+			<h1 class="header">Trivia Game!</h1>
+		</div>		
+	</div>
+
+	<div id="timerResultsRow" class="row">
+		<div id="questionTimer" class="col-md-12">	
+		</div>		
+	</div>
+
+	<div id="questionRow" class="row">
+		<div id="question" class="col-md-12 jumbotron">
+		</div>		
+	</div>
+
+	<div id="playContentRow" class="row">
+		<div class="col-md-3">
+		</div>
+		<div id="potentialAnswers" class="col-md-6">
+			<div id="potentialAnswer1-2Row" class="row answerRow">
+				<div id="potentialAnswer1Col" class="col-md-6 answerCol">
+					<button id="answerButton1" class="btn btn-primary btn-lg"></button>
+				</div>
+				<div id="potentialAnswer2Col" class="col-md-6 answerCol">				<button id="answerButton2" class="btn btn-primary btn-lg"></button>
+				</div>
+			</div>
+			<div id="potentialAnswer3-4Row" class="row answerRow">
+				<div id="potentialAnswer3Col" class="col-md-6 answerCol">
+					<button id="answerButton3" class="btn btn-primary btn-lg"></button>
+				</div>	
+				<div id="potentialAnswer4Col" class="col-md-6 answerCol">
+					<button id="answerButton4" class="btn btn-primary btn-lg"></button>
+				</div>				
+			</div>				
+		</div>
+		<div class="col-md-3">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<button id="startGame" class="btn btn-danger btn-lg">Start Game</button>
+		</div>
+	</div>
+	
+</div>
+
+</body>
+</html>
