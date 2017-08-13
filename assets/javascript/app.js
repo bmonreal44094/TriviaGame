@@ -96,29 +96,6 @@ var questions = [{
 
 //console.log("Correct Answer: " + questions[0].correctAnswer)
 
-function startGameOnClick() {
-	$("#startGame").on("click", function(event) {
-		$("#startGame").addClass("hide");
-		$("#startGame").off("click");
-		$("#questionRow").removeClass("hide");
-		$("#playContentRow").removeClass("hide");
-		$("#timerResultsRow").removeClass("hide");
-		questionLoad();
-	});
-}
-
-function questionLoad() {
-	$("#question").html(questions[questionsAsked].question);
-	$("#answerButton1").html(questions[questionsAsked].answer1);
-	$("#answerButton2").html(questions[questionsAsked].answer2);
-	$("#answerButton3").html(questions[questionsAsked].answer3);
-	$("#answerButton4").html(questions[questionsAsked].answer4);
-	questionTimer.start();
-	potentialAnswer();
-	questionsAsked++;
-	console.log("Questions Asked: " + questionsAsked);
-}
-
 var questionTimer = {
 	
 	time: 0,
@@ -149,7 +126,7 @@ var questionTimer = {
 	},
 
 	duration: function() {
-		if (questionTimer.time < 30) {
+		if (questionTimer.time < 3) {
 			questionTimer.count();
 		}
 
@@ -181,31 +158,50 @@ var questionTimer = {
 	}
 };	
 
+function startGameOnClick() {
+	$("#startGame").on("click", function(event) {
+		$("#startGame").addClass("hide");
+		$("#startGame").off("click");
+		$("#questionRow").removeClass("hide");
+		$("#playContentRow").removeClass("hide");
+		$("#timerResultsRow").removeClass("hide");
+		questionLoad();
+	});
+}
+
+function questionLoad() {
+	$("#question").html(questions[questionsAsked].question);
+	$("#answerButton1").html(questions[questionsAsked].answer1);
+	$("#answerButton2").html(questions[questionsAsked].answer2);
+	$("#answerButton3").html(questions[questionsAsked].answer3);
+	$("#answerButton4").html(questions[questionsAsked].answer4);
+	questionTimer.start();
+	potentialAnswer();
+	questionsAsked++;
+	console.log("Questions Asked: " + questionsAsked);
+}
+
 function potentialAnswer() {
 	$("#answerButton1").on("click", function(event) {
 		var lastChar = event.target.id[event.target.id.length -1];
-		console.log("lastChar " + lastChar);
 		questionTimer.stop();
 		answers(lastChar);
 		offClickAndHide();
 	});
 	$("#answerButton2").on("click", function(event) {
 		var lastChar = event.target.id[event.target.id.length -1];
-		console.log("lastChar " + lastChar);
 		questionTimer.stop();
 		answers(lastChar);
 		offClickAndHide();
 	});
 	$("#answerButton3").on("click", function(event) {
 		var lastChar = event.target.id[event.target.id.length -1];
-		console.log("lastChar " + lastChar);
 		questionTimer.stop();
 		answers(lastChar);
 		offClickAndHide();
 	});
 	$("#answerButton4").on("click", function(event) {
 		var lastChar = event.target.id[event.target.id.length -1];
-		console.log("lastChar " + lastChar);
 		questionTimer.stop();
 		answers(lastChar);
 		offClickAndHide();
@@ -230,6 +226,7 @@ function unhide() {
 	$("#answerButton4").removeClass("hide");
 }
 
+
 function answers(lastChar) {
 	var y = parseInt(lastChar);
 	if (questions[questionsAsked -1].correctAnswer === y) {
@@ -242,52 +239,89 @@ function answers(lastChar) {
 		incorrectAnswers++;
 		correctAnswer(y);
 	}
-	//console.log("lastChar: " + lastChar);
-	//console.log("Answers Hit!")
-	//console.log(questions[questionsAsked -1].correctAnswer);
 }
 
 function correctAnswer(lastChar) {
-	console.log("Correct Answer Hit!");
-	$("#potentialAnswer1-2Row").html("<div>Correct Answer: " + questions[questionsAsked -1].correctAnswerNarative + "</div>");
-	$("#potentialAnswer3-4Row").html("<img src=" + questions[questionsAsked -1].answerImage + ">");
-	console.log("<img src=" + questions[questionsAsked -1].answerImage);
-	console.log("Correct Answer:" + questions[questionsAsked -1].correctAnswerNarative);
+
+	var newDiv = $("<div></div>");
+	newDiv.attr("id", "narative");
+	$("#potentialAnswer1-2Row").append(newDiv);
+
+	var newImg = $("<img>");
+	newImg.attr("id", "image");
+	$("#potentialAnswer3-4Row").append(newImg);
+
+	$("#narative").text("Correct Answer: " + questions[questionsAsked -1].correctAnswerNarative);
+	$("#image").attr("src", questions[questionsAsked -1].answerImage);
+
 	holdAnswerTimer();
 }
 
 function holdAnswerTimer() {
 	if (questionsAsked === 8) {
-		setTimeout(gameOver, 1000 * 5);
+		setTimeout(gameOver, 1000 * 2);
 	}
 	else {
-		setTimeout(nextQuestion, 1000 * 5);
+		setTimeout(nextQuestion, 1000 * 1);
 	}
 }
 
 function nextQuestion() {
-	//$("#startGame").removeClass("hide");
-	//$("#questionRow").addClass("hide");
-	//$("#playContentRow").removeClass("hide");
-	//$("#timerResultsRow").addClass("hide");
-	$("#potentialAnswer1-2Row").html("");
-	$("#potentialAnswer3-4Row").html("");
+	$("#narative").html("");
+	$("#image").attr("src", "");
 	unhide();
 	questionTimer.reset();
 	questionLoad();
-	
 }
 
 function gameOver() {
-	//display results
+	$("#narative").html("");
+	$("#image").attr("src", "");
+
+	var newDiv1 = $("<div></div>");
+	newDiv1.attr("id", "correct");
+	newDiv1.addClass("alert alert-success");
+	$("#potentialAnswer1-2Row").append(newDiv1);
+
+	var newDiv2 = $("<div></div>");
+	newDiv2.attr("id", "incorrect");
+	newDiv2.addClass("alert alert-info");
+	$("#potentialAnswer1-2Row").append(newDiv2);
+
+	var newDiv3 = $("<div></div>");
+	newDiv3.attr("id", "unanswered");
+	newDiv3.addClass("alert alert-danger");
+	$("#potentialAnswer1-2Row").append(newDiv3);
+
+	$("#question").html("Results");
+	$("#correct").text("Correct Answers: " + correctAnswers);
+	$("#incorrect").text("Incorrect Answers: " + incorrectAnswers);
+	$("#unanswered").text("Unanswered Questions: " + unAnswered);
+
+	setTimeout(restartGame, 1000 * 2);
+}
+
+function restartGame() {
+	correctAnswers = 0;
+	incorrectAnswers = 0;
+	unAnswered = 0;
+	questionsAsked = 0;
+	intervalId = "";
+	$("#correct").text("");
+	$("#incorrect").text("");
+	$("#unanswered").text("");
+	$("#correct").removeClass("alert alert-danger");
+	$("#incorrect").removeClass("alert alert-danger");
+	$("#unanswered").removeClass("alert alert-danger");
+	$("#questionRow").addClass("hide");
+	$("#playContentRow").addClass("hide");
+	$("#timerResultsRow").addClass("hide");
+	//unhide();
+	questionTimer.reset();
+	$("#startGame").removeClass("hide");
 	startGameOnClick();
 }
 
-//$("#questionRow").addClass("hide"); //Remove later
-//$("#playContentRow").addClass("hide"); //Remove later
-$("#timerResultsRow").addClass("hide"); //Remove later
-
-//gameBegin();
 questionTimer.reset();
 startGameOnClick();
 
