@@ -94,7 +94,16 @@ var questions = [{
 		answerImage: "assets/images/442079-neptune.jpg",
 	}];
 
-//console.log("Correct Answer: " + questions[0].correctAnswer)
+var offClickAndHide = function() {
+	$("#answerButton1").addClass("hide");
+	$("#answerButton1").off("click");
+	$("#answerButton2").addClass("hide");
+	$("#answerButton2").off("click");
+	$("#answerButton3").addClass("hide");
+	$("#answerButton3").off("click");
+	$("#answerButton4").addClass("hide");
+	$("#answerButton4").off("click");
+}
 
 var questionTimer = {
 	
@@ -158,18 +167,7 @@ var questionTimer = {
 	}
 };	
 
-function startGameOnClick() {
-	$("#startGame").on("click", function(event) {
-		$("#startGame").addClass("hide");
-		$("#startGame").off("click");
-		$("#questionRow").removeClass("hide");
-		$("#playContentRow").removeClass("hide");
-		$("#timerResultsRow").removeClass("hide");
-		questionLoad();
-	});
-}
-
-function questionLoad() {
+var questionLoad = function() {
 	$("#question").html(questions[questionsAsked].question);
 	$("#answerButton1").html(questions[questionsAsked].answer1);
 	$("#answerButton2").html(questions[questionsAsked].answer2);
@@ -181,7 +179,49 @@ function questionLoad() {
 	console.log("Questions Asked: " + questionsAsked);
 }
 
-function potentialAnswer() {
+var startGameOnClick = function() {
+	$("#startGame").on("click", function(event) {
+		$("#startGame").addClass("hide");
+		$("#startGame").off("click");
+		$("#questionRow").removeClass("hide");
+		$("#playContentRow").removeClass("hide");
+		$("#timerResultsRow").removeClass("hide");
+		questionLoad();
+	});
+}
+
+var correctAnswer = function(lastChar) {
+
+	var newDiv = $("<div></div>");
+	newDiv.attr("id", "narative");
+	$("#potentialAnswer1-2Row").append(newDiv);
+
+	var newImg = $("<img>");
+	newImg.attr("id", "image");
+	$("#potentialAnswer3-4Row").append(newImg);
+
+	$("#narative").text("Correct Answer: " + questions[questionsAsked -1].correctAnswerNarative);
+	$("#image").attr("src", questions[questionsAsked -1].answerImage);
+
+	holdAnswerTimer();
+}
+
+
+var answers = function(lastChar) {
+	var y = parseInt(lastChar);
+	if (questions[questionsAsked -1].correctAnswer === y) {
+		$("#question").html("You are right!");
+		correctAnswers++;
+		correctAnswer();
+	}
+	else {
+		$("#question").html("Sorry, you are wrong!");
+		incorrectAnswers++;
+		correctAnswer(y);
+	}
+}
+
+var potentialAnswer = function() {
 	$("#answerButton1").on("click", function(event) {
 		var lastChar = event.target.id[event.target.id.length -1];
 		questionTimer.stop();
@@ -208,56 +248,14 @@ function potentialAnswer() {
 	});
 }
 
-function offClickAndHide() {
-	$("#answerButton1").addClass("hide");
-	$("#answerButton1").off("click");
-	$("#answerButton2").addClass("hide");
-	$("#answerButton2").off("click");
-	$("#answerButton3").addClass("hide");
-	$("#answerButton3").off("click");
-	$("#answerButton4").addClass("hide");
-	$("#answerButton4").off("click");
-}
-
-function unhide() {
+var unhide = function() {
 	$("#answerButton1").removeClass("hide");
 	$("#answerButton2").removeClass("hide");
 	$("#answerButton3").removeClass("hide");
 	$("#answerButton4").removeClass("hide");
 }
 
-
-function answers(lastChar) {
-	var y = parseInt(lastChar);
-	if (questions[questionsAsked -1].correctAnswer === y) {
-		$("#question").html("You are right!");
-		correctAnswers++;
-		correctAnswer();
-	}
-	else {
-		$("#question").html("Sorry, you are wrong!");
-		incorrectAnswers++;
-		correctAnswer(y);
-	}
-}
-
-function correctAnswer(lastChar) {
-
-	var newDiv = $("<div></div>");
-	newDiv.attr("id", "narative");
-	$("#potentialAnswer1-2Row").append(newDiv);
-
-	var newImg = $("<img>");
-	newImg.attr("id", "image");
-	$("#potentialAnswer3-4Row").append(newImg);
-
-	$("#narative").text("Correct Answer: " + questions[questionsAsked -1].correctAnswerNarative);
-	$("#image").attr("src", questions[questionsAsked -1].answerImage);
-
-	holdAnswerTimer();
-}
-
-function holdAnswerTimer() {
+var holdAnswerTimer = function() {
 	if (questionsAsked === 8) {
 		setTimeout(gameOver, 1000 * 5);
 	}
@@ -266,14 +264,7 @@ function holdAnswerTimer() {
 	}
 }
 
-function nextQuestion() {
-	removeNarativeAndImage();
-	unhide();
-	questionTimer.reset();
-	questionLoad();
-}
-
-function removeNarativeAndImage() {
+var removeNarativeAndImage = function() {
 	var parent0 = document.getElementById("potentialAnswer3-4Row");
 	var child0 = document.getElementById("image");
 	var parent1 = document.getElementById("potentialAnswer1-2Row");
@@ -282,7 +273,14 @@ function removeNarativeAndImage() {
 	parent1.removeChild(child1);
 }
 
-function gameOver() {
+var nextQuestion = function() {
+	removeNarativeAndImage();
+	unhide();
+	questionTimer.reset();
+	questionLoad();
+}
+
+var gameOver = function() {
 	removeNarativeAndImage();
 
 	var newDiv1 = $("<div></div>");
@@ -308,7 +306,7 @@ function gameOver() {
 	setTimeout(restartGame, 1000 * 5);
 }
 
-function restartGame() {
+var restartGame = function() {
 	correctAnswers = 0;
 	incorrectAnswers = 0;
 	unAnswered = 0;
