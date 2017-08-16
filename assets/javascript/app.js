@@ -78,7 +78,7 @@ var questions = [{
 		answer2: "2,399 Miles",
 		answer3: "20,150 Miles",
 		answer4: "46 Miles",
-		correctAnswer: 3,
+		correctAnswer: 1,
 		correctAnswerNarative: "The circumference of the moon is 6,786 Miles",
 		answerImage: "assets/images/our_closest_mainimage.jpg",
 		},
